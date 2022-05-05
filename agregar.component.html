@@ -1,0 +1,76 @@
+<div class="container">
+
+    <form [formGroup]="formularioCreado">
+
+        <div class="form-group">
+            <label >Usuario</label>
+            <input type="text" class="form-control" formControlName="nombre">
+
+            <div *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty " class="alert alert-danger" role="alert">
+               <span>El Nombre Es Requerido</span>
+            </div>
+        </div>
+
+        <p> .invalid {{ formularioCreado.controls['nombre'].invalid }} </p>
+        <p> .dirty {{ formularioCreado.controls['nombre'].dirty }} </p>
+        
+
+        <div class="form-group">
+
+            <label>Correo</label>
+            <input type="text" class="form-control" formControlName="correo">
+
+            <div  *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
+                
+                <div  *ngIf="formularioCreado.controls['correo'].errors?.['required']" class="alert alert-danger" role="alert">
+                    El Correo Es Requerido
+                </div>
+
+                <div  *ngIf="formularioCreado.controls['correo'].errors?.['email']"  class="alert alert-danger" role="alert">
+                    No Parece Un Correo Valido
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-group" >
+            <label>Contraseña</label>
+            <input type="password" class="form-control" formControlName="password">
+
+            <div *ngIf="formularioCreado.controls['password'].invalid && formularioCreado.controls['password'].dirty">
+
+                <div *ngIf="formularioCreado.controls['password'].errors?.['required']" class="alert alert-danger" role="alert">
+                    La Contraseña Es Requerida
+                </div>
+                    
+                <div *ngIf="formularioCreado.controls['password'].errors?.['minlength']" class="alert alert-danger" role="alert" >  
+                    <!-- sin camel case en minlength -->
+                    La Contraseña Debe Tener Almenos 8 Caracteres
+                </div>
+
+            </div>
+
+        </div>
+
+        <button *ngIf="esNuevo" [disabled]="!formularioCreado.valid" (click)="agregar()" class="btn btn-primary">Agregar</button>
+        <button *ngIf="!esNuevo" [disabled]="!formularioCreado.valid" (click)="editar()" class="btn btn-primary">Editar</button>
+
+    </form>
+
+</div>
+
+<div *ngFor="let usuario of usuarios; let position = index">
+    
+        <h4> {{ usuario.nombre }} Tiene la posicion: {{ position }}</h4>
+        <p> {{ usuario.correo }} </p>
+        <p> {{ usuario.password }} </p>
+
+        <button (click)="editarUsuario(position)">Editar</button> 
+        <!-- recibe la posicion de la linea 63 -->
+
+</div>
+
+<p> Valid {{ formularioCreado.valid }} </p>
+
+<p> Value con Json {{ formularioCreado.value | json }} </p>
